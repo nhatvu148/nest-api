@@ -14,6 +14,7 @@ export class AuthController {
 
   @Post('/signin')
   signin(@Body() dto: AuthDto) {
+    // JWT Strategy will append req/user to Request
     return this.authService.signin(dto);
   }
 
