@@ -1,24 +1,37 @@
 version: "3.9"
 services:
   dev-db:
-    image: postgres:13
+    container_name: dev-db
+    image: postgres:latest
     ports:
       - 5456:5432
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123456789
-      POSTGRES_DB: nest
+    volumes:
+      - postgresql-data:/var/lib/postgresql:Z
+    env_file:
+      - .env
     networks:
       - nest_network
   test-db:
-    image: postgres:13
+    container_name: test-db
+    image: postgres:latest
     ports:
       - 5457:5432
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123456789
-      POSTGRES_DB: nest
+    env_file:
+      - .env.test
+    networks:
+      - nest_network
+  pgadmin4:
+    container_name: pgadmin4
+    image: dpage/pgadmin4
+    env_file:
+      - .env
+    ports:
+      - "8989:80"
     networks:
       - nest_network
 networks:
   nest_network:
+
+
+volumes:
+  postgresql-data:
